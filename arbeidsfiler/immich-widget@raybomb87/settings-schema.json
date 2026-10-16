@@ -134,7 +134,7 @@
     "type": "switch",
     "default": true,
     "description": "Crop around faces",
-    "tooltip": "Uses Immich face detection so heads are not cut off. Needs Pillow (python3-pil)."
+    "tooltip": "Uses Immich face detection so heads are not cut off."
   },
   "count": {
     "type": "spinbutton",

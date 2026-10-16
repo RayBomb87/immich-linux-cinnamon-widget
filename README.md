@@ -17,12 +17,15 @@ Left-click shows the next photo. Middle-click opens the photo in Immich.
 
 ## Requirements
 
-- Linux Mint or another distribution with the Cinnamon desktop (tested on Linux Mint 22 / Cinnamon 6)
-- Python 3 (preinstalled on Mint)
-- Pillow (`python3-pil`, preinstalled on Mint) for cropping. Without it, the widget still works but crops in the centre.
+- Linux Mint or another distribution with the Cinnamon desktop (tested on Linux Mint 22 / Cinnamon 6.6)
 - An Immich server (tested with Immich 3.3) reachable from the computer, at home or over a VPN such as Tailscale
 
 ## Install
+
+From Cinnamon (once it is published on Cinnamon Spices): right-click the desktop → **Add Desklets** →
+**Download** tab, search for *Immich Widget* and install it.
+
+Manually:
 
 ```sh
 git clone https://github.com/RayBomb87/immich-linux-cinnamon-widget.git
@@ -67,17 +70,21 @@ Each one has its own settings.
 ## Privacy
 
 - The widget only talks to the Immich server you enter.
-- Photos are cached in `~/.cache/immich-widget/<widget id>/`, readable only by you.
-- The API key is stored in the widget's settings in your home folder. It is passed to the fetch
-  script through an environment variable, so it never shows in the process list.
+- Photos are cached in `~/.cache/immich-widget@raybomb87/<widget id>/`.
+- The API key is stored in the widget's settings in your home folder.
   Give the key only the permissions listed above.
 
 ## How it works
 
-`desklet.js` runs `fetch.py` in the background at start-up, on a schedule and when the settings change.
-`fetch.py` asks Immich for random photos (`/api/search/random`), downloads the preview size,
-crops it around the faces from `/api/faces` with Pillow, and writes the photos and a `captions.json`
-to the cache folder. The desklet watches that folder and plays the photos as a slideshow.
+Everything runs inside the desklet, asynchronously, with Cinnamon's own libraries (libsoup and GdkPixbuf).
+At start-up, on a schedule and when the settings change, it asks Immich for random photos
+(`/api/search/random`), downloads the preview size, crops it around the faces from `/api/faces`
+and stores the photos and a `captions.json` in the cache folder. The slideshow plays from that folder.
+
+## Translations
+
+English and Norwegian Bokmål. Translations are welcome: copy `po/immich-widget@raybomb87.pot`
+to `po/<language>.po` and translate it, for example with Poedit.
 
 ## License
 
