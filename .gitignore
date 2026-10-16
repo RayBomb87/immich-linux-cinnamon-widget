@@ -1,0 +1,9 @@
+.superpowers/
+.claude/
+__pycache__/
+*.pyc
+.pytest_cache/
+opplasting/
+.DS_Store
+api-key
+.env

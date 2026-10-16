@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="nb"><head><meta charset="utf-8"><title>Immich Widget</title>
+<style>
+@page { size: A4; margin: 18mm; @bottom-center { content: "Side " counter(page) " av " counter(pages); font-size: 9pt; color: #666; } }
+body { font-family: -apple-system, Helvetica, sans-serif; font-size: 10.5pt; line-height: 1.45; color: #222; }
+h1 { color: #1a4f7a; font-size: 22pt; margin: 0 0 4pt; padding-bottom: 4pt; border-bottom: 2px solid #1a4f7a; }
+h2 { color: #1a4f7a; font-size: 15pt; margin: 18pt 0 6pt; }
+code { background: #eee; padding: 0 3pt; border-radius: 2pt; font-family: Menlo, monospace; font-size: 9.5pt; }
+.merk { background: #eef4fa; border-left: 4px solid #1a4f7a; padding: 6pt 10pt; margin: 10pt 0; }
+table { border-collapse: collapse; width: 100%; font-size: 9.5pt; }
+td, th { border-bottom: 1px solid #ddd; padding: 3pt 6pt; text-align: left; vertical-align: top; }
+th { color: #1a4f7a; }
+</style></head><body>
+<h1>Immich Widget</h1>
+<p>En widget for skrivebordet i Linux Mint (Cinnamon) som viser bilder fra din egen Immich-server som lysbildefremvisning, med dato og sted.</p>
+
+<h2>Installasjon</h2>
+<ol>
+<li>Kopier mappen <code>immich-widget@raybomb87</code> til <code>~/.local/share/cinnamon/desklets/</code>.</li>
+<li>Høyreklikk skrivebordet → <b>Legg til skrivebordsprogrammer</b>. Velg <b>Immich Widget</b> og trykk <b>+</b>.</li>
+<li>Lag en API-nøkkel i Immich: profilbildet → <b>Kontoinnstillinger → API-nøkler → Ny API-nøkkel</b>. Gi den tilgangene <code>asset.read</code>, <code>asset.view</code> og <code>face.read</code>. Skal widgeten vise ett album eller én person, trengs også <code>album.read</code> eller <code>person.read</code>.</li>
+<li>Høyreklikk widgeten → <b>Konfigurer</b>. Skriv inn Immich-adressen (f.eks. <code>http://192.168.1.10:2283</code>) og API-nøkkelen.</li>
+</ol>
+<p>De første bildene kommer etter noen sekunder.</p>
+
+<h2>Innstillinger</h2>
+<table>
+<tr><th>Side</th><th>Innstilling</th></tr>
+<tr><td>Connection</td><td>Serveradresse, API-nøkkel, knapp for å hente nye bilder med en gang</td></tr>
+<tr><td>Photos</td><td>Alle bilder, favoritter, ett album eller én person. Ta med skjermbilder eller ikke. Beskjæring rundt ansikter. Antall bilder, hvor ofte nye hentes og tid per bilde.</td></tr>
+<tr><td>Appearance</td><td>Størrelse, avrunding, skygge, overgang, datoformat, sted og tekststørrelse</td></tr>
+</table>
+
+<h2>Bruk</h2>
+<ul>
+<li><b>Klikk</b> på bildet: neste bilde. <b>Midtklikk</b>: åpne bildet i Immich.</li>
+<li>Bildene lagres i <code>~/.cache/immich-widget/</code>, så widgeten virker også uten nett.</li>
+<li>Du kan ha flere widgeter samtidig, for eksempel én med favoritter og én med ett album.</li>
+</ul>
+<div class="merk">Viser widgeten en feilmelding, står årsaken der, for eksempel at API-nøkkelen mangler en tilgang eller at serveren ikke svarer.</div>
+</body></html>
