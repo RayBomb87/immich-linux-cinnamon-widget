@@ -3,6 +3,8 @@
 A desktop photo slideshow for the Cinnamon desktop that shows photos from your own
 [Immich](https://immich.app) server.
 
+![Immich Widget on the desktop](arbeidsfiler/screenshots/widget.png)
+
 - **Smart cropping.** Uses Immich face detection to crop each photo to the widget's shape around the people in it, so heads are not cut off.
 - **Your photos, your choice.** Show all photos, only favorites, one album or one person.
 - **Camera photos only.** Screenshots and saved images are skipped (optional).
@@ -41,6 +43,8 @@ Then right-click the desktop → **Add Desklets**, select **Immich Widget** and 
 
 The first photos appear after a few seconds.
 
+![Settings](arbeidsfiler/screenshots/settings.png)
+
 ## Settings
 
 | Page | Setting | Default |
@@ -76,5 +80,8 @@ crops it around the faces from `/api/faces` with Pillow, and writes the photos a
 to the cache folder. The desklet watches that folder and plays the photos as a slideshow.
 
 ## License
+
+The example photo in the screenshot is [Loen fra Skåla](https://commons.wikimedia.org/wiki/File:Loen_fra_Sk%C3%A5la.jpg) (CC0).
+
 
 [MIT](LICENSE)
