@@ -7,3 +7,4 @@ opplasting/
 .DS_Store
 api-key
 .env
+*~

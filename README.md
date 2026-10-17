@@ -6,19 +6,20 @@ A desktop photo slideshow for the Cinnamon desktop that shows photos from your o
 ![Immich Widget on the desktop](arbeidsfiler/screenshots/widget.png)
 
 - **Smart cropping.** Uses Immich face detection to crop each photo to the widget's shape around the people in it, so heads are not cut off.
-- **Your photos, your choice.** Show all photos, only favorites, one album or one person.
+- **Your photos, your choice.** Tick the people, albums and tags to show, or use *On this day*, favorites, a star rating, a time span, places or Immich smart search ("beach", "snow").
 - **Camera photos only.** Screenshots and saved images are skipped (optional).
-- **Looks at home on the desktop.** The photo fills the frame with rounded corners, a soft shadow and a smooth fade.
-- **Date and place caption**, in your own language (for example *27 July 2023 · Bergen*).
+- **Transitions.** Fade, slide in four directions, zoom and flip – tick several and the widget changes between them. Optional slow Ken Burns zoom towards the faces.
+- **Caption you control.** Date, "5 years ago", place, the names of the people and the Immich description, each on or off, in any corner, with an optional rounded background.
 - **Works offline.** Photos are cached, and a new batch is fetched on a schedule you choose.
-- **Everything is set in the widget's settings.** No config files, no terminal.
+- **Everything is set in the widget's settings.** No config files, no terminal. The settings even tell you which API key permissions your choices need.
 
-Left-click shows the next photo. Middle-click opens the photo in Immich.
+Left-click shows the next photo, middle-click opens it in Immich. Right-click to mark it as a favorite or
+to never show it again. The slideshow pauses while the mouse is over it.
 
 ## Requirements
 
 - Linux Mint or another distribution with the Cinnamon desktop (tested on Linux Mint 22 / Cinnamon 6.6)
-- An Immich server (tested with Immich 3.3) reachable from the computer, at home or over a VPN such as Tailscale
+- An Immich server, version 3.2 or newer (tested with Immich 3.3), reachable from the computer, at home or over a VPN such as Tailscale
 
 ## Install
 
@@ -36,34 +37,33 @@ Then right-click the desktop → **Add Desklets**, select **Immich Widget** and 
 
 ## Set up
 
-1. In Immich, go to your profile picture → **Account Settings → API Keys → New API Key**.
-   Give it these permissions:
-   - `asset.read` and `asset.view` (required)
-   - `face.read` (for cropping around faces)
-   - `album.read` (only if you show one album)
-   - `person.read` (only if you show one person)
-2. Right-click the widget → **Configure** and enter the server address (for example `http://192.168.1.10:2283`) and the API key.
+1. Right-click the widget → **Configure** and enter the server address (for example `http://192.168.1.10:2283`).
+2. Make your choices on the **Photos**, **Text** and **Appearance** pages.
+3. On the **Connection** page, *Permissions the key needs* now lists exactly the permissions your choices need.
+   Click **Open API keys in Immich**, create a new API key with just those permissions and paste it into **API key**.
 
-The first photos appear after a few seconds.
+| Permission | Needed when |
+| --- | --- |
+| `asset.read`, `asset.view` | Always |
+| `face.read` | Crop around faces, Ken Burns zoom or names in the caption |
+| `person.read` / `album.read` / `tag.read` | Fetching the lists of people / albums / tags, or showing ticked ones |
+| `memory.read` | *On this day* |
+| `asset.update` | Only for *Mark as favorite* in the right-click menu |
+
+If you later turn on something that needs another permission, the widget says which one is missing.
 
 ![Settings](arbeidsfiler/screenshots/settings.png)
 
 ## Settings
 
-| Page | Setting | Default |
-| --- | --- | --- |
-| Connection | Server address, API key, *Fetch new photos now* | – |
-| Photos | Show: all photos, favorites, one album, one person | All photos |
-| | Album or person name | – |
-| | Include screenshots and saved images | Off |
-| | Crop around faces | On |
-| | Photos per batch | 40 |
-| | Fetch a new batch every | 6 hours |
-| | Time per photo | 30 seconds |
-| Appearance | Width × height | 400 × 240 px |
-| | Corner radius, drop shadow, fade duration | 16 px, on, 800 ms |
-| | Date format, place (city / city and country), text size | 27 July 2023, city, 10.5 pt |
+| Page | Settings |
+| --- | --- |
+| Connection | Server address, API key, *Fetch new photos now*, permissions the key needs, *Open API keys in Immich* |
+| Photos | People, albums and tags (fetched from Immich, tick to show); on this day; favorites only; at least N stars; taken any time / last 12 months / last 5 years / between two years; places; smart search; screenshots; photos per batch, how often to fetch, time per photo |
+| Text | Show text; date and its format; how long ago; place (city / city, country / country); names; description; position; size; shadow; background with opacity and corner radius |
+| Appearance | Width × height, corner radius, crop around faces, Ken Burns zoom, transitions (fade, slide left/right/up/down, zoom, flip), random or in turn, duration |
 
+Ticked people, albums or tags mean *any of them*; all the other filters must all match.
 You can add several widgets, for example one with favorites and one with a single album.
 Each one has its own settings.
 
@@ -72,14 +72,17 @@ Each one has its own settings.
 - The widget only talks to the Immich server you enter.
 - Photos are cached in `~/.cache/immich-widget@raybomb87/<widget id>/`.
 - The API key is stored in the widget's settings in your home folder.
-  Give the key only the permissions listed above.
+  Give the key only the permissions the settings list.
+- *Don't show this photo again* is remembered by the widget only; nothing changes in Immich.
 
 ## How it works
 
 Everything runs inside the desklet, asynchronously, with Cinnamon's own libraries (libsoup and GdkPixbuf).
-At start-up, on a schedule and when the settings change, it asks Immich for random photos
-(`/api/search/random`), downloads the preview size, crops it around the faces from `/api/faces`
+At start-up, on a schedule and when the settings change, it asks Immich for photos – `/api/search/random`
+(or `/api/search/smart` with a search text, or `/api/memories` for *On this day*) with the search `filter`
+introduced in Immich 3.2 – downloads the preview size, crops it around the faces from `/api/faces`
 and stores the photos and a `captions.json` in the cache folder. The slideshow plays from that folder.
+Rounded corners are drawn with a small GLSL shader on the whole frame, so sliding and zooming photos stay inside them.
 
 ## Translations
 

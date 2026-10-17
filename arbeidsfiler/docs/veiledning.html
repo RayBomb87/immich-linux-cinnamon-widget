@@ -7,35 +7,65 @@ h1 { color: #1a4f7a; font-size: 22pt; margin: 0 0 4pt; padding-bottom: 4pt; bord
 h2 { color: #1a4f7a; font-size: 15pt; margin: 18pt 0 6pt; }
 code { background: #eee; padding: 0 3pt; border-radius: 2pt; font-family: Menlo, monospace; font-size: 9.5pt; }
 .merk { background: #eef4fa; border-left: 4px solid #1a4f7a; padding: 6pt 10pt; margin: 10pt 0; }
-table { border-collapse: collapse; width: 100%; font-size: 9.5pt; }
+table { page-break-inside: avoid; border-collapse: collapse; width: 100%; font-size: 9.5pt; }
 td, th { border-bottom: 1px solid #ddd; padding: 3pt 6pt; text-align: left; vertical-align: top; }
 th { color: #1a4f7a; }
+img { width: 100%; border: 1px solid #ccc; border-radius: 4pt; margin: 6pt 0; }
+.liten { width: 70%; }
 </style></head><body>
-<h1>Immich Widget</h1>
-<p>En widget for skrivebordet i Linux Mint (Cinnamon) som viser bilder fra din egen Immich-server som lysbildefremvisning, med dato og sted.</p>
+<h1>Immich Widget 1.1</h1>
+<p>En widget for skrivebordet i Linux Mint (Cinnamon) som viser bilder fra din egen Immich-server som lysbildefremvisning. Krever Immich 3.2 eller nyere.</p>
 
 <h2>Installasjon</h2>
 <ol>
 <li>Kopier mappen <code>immich-widget@raybomb87</code> til <code>~/.local/share/cinnamon/desklets/</code>.</li>
 <li>Høyreklikk skrivebordet → <b>Legg til skrivebordsprogrammer</b>. Velg <b>Immich Widget</b> og trykk <b>+</b>.</li>
-<li>Lag en API-nøkkel i Immich: profilbildet → <b>Kontoinnstillinger → API-nøkler → Ny API-nøkkel</b>. Gi den tilgangene <code>asset.read</code>, <code>asset.view</code> og <code>face.read</code>. Skal widgeten vise ett album eller én person, trengs også <code>album.read</code> eller <code>person.read</code>.</li>
-<li>Høyreklikk widgeten → <b>Konfigurer</b>. Skriv inn Immich-adressen (f.eks. <code>http://192.168.1.10:2283</code>) og API-nøkkelen.</li>
+<li>Høyreklikk widgeten → <b>Konfigurer</b>. Skriv inn Immich-adressen (f.eks. <code>http://192.168.1.10:2283</code>).</li>
+<li>Gjør valgene dine på sidene <b>Bilder</b>, <b>Tekst</b> og <b>Utseende</b> først. Da vet widgeten hvilke tilganger API-nøkkelen trenger.</li>
+<li>Lag API-nøkkelen som beskrevet under, og lim den inn i feltet <b>API-nøkkel</b>.</li>
 </ol>
-<p>De første bildene kommer etter noen sekunder.</p>
 
-<h2>Innstillinger</h2>
+<h2>Lag API-nøkkelen – med akkurat de tilgangene du trenger</h2>
+<ol>
+<li>Åpne siden <b>Tilkobling</b> i widgetens innstillinger. Feltet <b>Tilganger nøkkelen trenger</b> viser nøyaktig hvilke tilganger valgene dine krever. Det oppdateres av seg selv når du endrer noe.</li>
+<li>Trykk <b>Åpne API-nøkler i Immich</b>. Nettleseren åpner riktig side i Immich (logg inn hvis du blir bedt om det).</li>
+<li>Trykk <b>Ny API-nøkkel</b>, gi den et navn (f.eks. <i>Bildeframme</i>) og huk av <b>bare</b> tilgangene fra feltet.</li>
+<li>Kopier nøkkelen og lim den inn i <b>API-nøkkel</b> i widgeten.</li>
+</ol>
+<img class="liten" src="tilkobling.png" alt="Siden Tilkobling" style="width:60%">
+<p>Slik henger valgene og tilgangene sammen:</p>
 <table>
-<tr><th>Side</th><th>Innstilling</th></tr>
-<tr><td>Connection</td><td>Serveradresse, API-nøkkel, knapp for å hente nye bilder med en gang</td></tr>
-<tr><td>Photos</td><td>Alle bilder, favoritter, ett album eller én person. Ta med skjermbilder eller ikke. Beskjæring rundt ansikter. Antall bilder, hvor ofte nye hentes og tid per bilde.</td></tr>
-<tr><td>Appearance</td><td>Størrelse, avrunding, skygge, overgang, datoformat, sted og tekststørrelse</td></tr>
+<tr><th>Tilgang</th><th>Trengs når</th></tr>
+<tr><td><code>asset.read</code>, <code>asset.view</code></td><td>Alltid – for å finne og vise bildene</td></tr>
+<tr><td><code>face.read</code></td><td><i>Beskjær rundt ansikter</i>, <i>Sakte zoom (Ken Burns)</i> eller <i>Navn på personene i bildet</i> er på</td></tr>
+<tr><td><code>person.read</code></td><td>Du henter personlisten eller har huket av personer</td></tr>
+<tr><td><code>album.read</code></td><td>Du henter albumlisten eller har huket av album</td></tr>
+<tr><td><code>tag.read</code></td><td>Du henter taggelisten eller har huket av tagger</td></tr>
+<tr><td><code>memory.read</code></td><td><i>På denne dagen</i> er på</td></tr>
+<tr><td><code>asset.update</code></td><td>Bare hvis du vil bruke <i>Merk som favoritt</i> i høyreklikkmenyen</td></tr>
 </table>
+<div class="merk">Endrer du valgene senere slik at det trengs en ny tilgang, sier widgeten fra med meldingen «API-nøkkelen mangler tilgangen …». Gå da til API-nøklene i Immich, trykk på blyanten ved nøkkelen og huk av den nye tilgangen. Nøkkelen i widgeten trenger ikke byttes.</div>
+
+<h2>Velg bildene</h2>
+<ul>
+<li><b>Personer, album og tagger:</b> trykk <b>Hent personer, album og tagger fra Immich</b> og huk av dem du vil se. Avkryssede betyr «hvem som helst av dem». Ingen avkrysset betyr alle.</li>
+<li><b>På denne dagen:</b> bilder tatt på dagens dato tidligere år. Finnes det ingen, brukes de andre valgene.</li>
+<li><b>Filtre:</b> bare favoritter, minst X stjerner, tidsrom, steder (by eller land, skilt med komma) og <b>Søk etter</b> (det smarte søket i Immich, f.eks. «strand» eller «snø»). Alle filtrene virker sammen.</li>
+<li><b>Skjermbilder</b> er utelatt med mindre du slår dem på.</li>
+</ul>
+
+<h2>Tekst og utseende</h2>
+<ul>
+<li><b>Tekst:</b> slå hele teksten av eller på, og hver del for seg: dato, «for N år siden», sted, navn på personene og beskrivelsen fra Immich. Velg plassering (oppe/nede, venstre/midten/høyre), tekstskygge og en bakgrunn bak teksten med egen avrunding og dekkevne.</li>
+<li><b>Overganger:</b> huk av én eller flere: toning, skyv mot venstre/høyre/opp/ned, zoom og vend. Med flere valgt veksler widgeten mellom dem, tilfeldig eller etter tur.</li>
+<li><b>Sakte zoom (Ken Burns):</b> bildet zoomer sakte inn mot personene mens det vises.</li>
+</ul>
 
 <h2>Bruk</h2>
 <ul>
-<li><b>Klikk</b> på bildet: neste bilde. <b>Midtklikk</b>: åpne bildet i Immich.</li>
+<li><b>Klikk</b>: neste bilde. <b>Midtklikk</b>: åpne bildet i Immich.</li>
+<li><b>Høyreklikk</b>: <i>Merk som favoritt</i> / <i>Fjern fra favoritter</i>, og <i>Ikke vis dette bildet igjen</i> (skjuler bildet bare i widgeten, ikke i Immich).</li>
+<li>Fremvisningen tar <b>pause</b> mens musepekeren er over bildet.</li>
 <li>Bildene lagres i <code>~/.cache/immich-widget@raybomb87/</code>, så widgeten virker også uten nett.</li>
-<li>Du kan ha flere widgeter samtidig, for eksempel én med favoritter og én med ett album.</li>
 </ul>
-<div class="merk">Viser widgeten en feilmelding, står årsaken der, for eksempel at API-nøkkelen mangler en tilgang eller at serveren ikke svarer.</div>
 </body></html>
