@@ -44,10 +44,6 @@ msgstr ""
 msgid "Immich Widget"
 msgstr ""
 
-#: desklet.js:253
-msgid "asset.update (only for Mark as favorite)"
-msgstr ""
-
 #: desklet.js:390
 #, javascript-format
 msgid "%d year ago"

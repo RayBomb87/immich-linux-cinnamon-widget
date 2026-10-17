@@ -41,10 +41,6 @@ msgstr "Fjern fra favoritter"
 msgid "Immich Widget"
 msgstr "Immich Widget"
 
-#: desklet.js:253
-msgid "asset.update (only for Mark as favorite)"
-msgstr "asset.update (bare for Merk som favoritt)"
-
 #: desklet.js:390
 #, javascript-format
 msgid "%d year ago"

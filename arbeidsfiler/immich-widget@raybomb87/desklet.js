@@ -259,8 +259,7 @@ class ImmichWidget extends Desklet.Desklet {
         let groups = new Map();
         for (let p of [...new Set(needed)].sort()) {
             let group = p.split(".")[0];
-            groups.set(group, [...(groups.get(group) || []),
-                p == "asset.update" ? _("asset.update (only for Mark as favorite)") : p]);
+            groups.set(group, [...(groups.get(group) || []), p]);
         }
         return [...groups.values()].map(g => g.join(", ")).join("\n");
     }
