@@ -34,6 +34,10 @@ const TRANSITIONS = ["fade", "slide-left", "slide-right", "slide-up", "slide-dow
 const OTHER_KEYS = ["ken-burns", "trans-order", "fade", "hidden-photos",
     ...TRANSITIONS.map(t => "t-" + t)];
 
+// English country names Immich may use that differ from ICU's.
+const COUNTRY_ALIASES = { "United States of America": "US", "Russian Federation": "RU", "Turkey": "TR",
+    "Czech Republic": "CZ", "Korea, Republic of": "KR", "Viet Nam": "VN", "Macedonia": "MK" };
+
 // Masks the whole frame to rounded corners, so sliding and zooming photos stay inside them.
 const ROUND_SHADER = `
 uniform sampler2D tex;
@@ -243,15 +247,22 @@ class ImmichWidget extends Desklet.Desklet {
 
     // ---- permissions --------------------------------------------------------
 
+    // One line per group (album, asset, face, ...), in alphabetical order.
     _neededPermissions() {
-        let needed = ["asset.read", "asset.view"];
+        let needed = ["asset.read", "asset.view", "asset.update"];
         if (this._needFaces()) needed.push("face.read");
-        if (ticked(this.people).length) needed.push("person.read");
-        if (ticked(this.albums).length) needed.push("album.read");
-        if (ticked(this.tags).length) needed.push("tag.read");
+        // a fetched list means the lists are in use, so keep the key able to fetch and count them
+        if ((this.people || []).length) needed.push("person.read", "asset.statistics");
+        if ((this.albums || []).length) needed.push("album.read");
+        if ((this.tags || []).length) needed.push("tag.read", "asset.statistics");
         if (this.on_this_day) needed.push("memory.read");
-        needed.push(_("asset.update (only for Mark as favorite)"));
-        return needed.join(", ");
+        let groups = new Map();
+        for (let p of [...new Set(needed)].sort()) {
+            let group = p.split(".")[0];
+            groups.set(group, [...(groups.get(group) || []),
+                p == "asset.update" ? _("asset.update (only for Mark as favorite)") : p]);
+        }
+        return [...groups.values()].map(g => g.join(", ")).join("\n");
     }
 
     _updatePermissions() {
@@ -390,14 +401,42 @@ class ImmichWidget extends Desklet.Desklet {
             if (years > 0) first.push(ngettext("%d year ago", "%d years ago", years).format(years));
         }
         if (this.show_place) {
-            let place = this.place == "country" ? c.country :
-                this.place == "city-country" && c.city && c.country ? `${c.city}, ${c.country}` : c.city;
+            let country = this._country(c.country);
+            let place = this.place == "country" ? country :
+                this.place == "city-country" && c.city && country ? `${c.city}, ${country}` : c.city;
             if (place) first.push(place);
         }
         let lines = [first.join(" · ")];
         if (this.show_names && c.names && c.names.length) lines.push(c.names.join(", "));
         if (this.show_description && c.description) lines.push(c.description);
         return lines.filter(l => l).join("\n");
+    }
+
+    // Immich names countries in English; show them in the desktop's language when ICU knows the name.
+    _country(name) {
+        if (!name) return "";
+        if (!this._countries) {
+            this._countries = new Map();
+            this._englishCountries = new Map();
+            try {
+                let lang = GLib.get_language_names()[0].split(/[._@]/)[0].replace("_", "-");
+                let en = new Intl.DisplayNames(["en"], { type: "region", fallback: "none" });
+                let local = new Intl.DisplayNames([lang, "en"], { type: "region", fallback: "none" });
+                let letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                for (let a of letters)
+                    for (let b of letters) {
+                        let english = en.of(a + b);
+                        if (!english) continue;
+                        this._countries.set(english.toLowerCase(), local.of(a + b) || english);
+                        this._englishCountries.set((local.of(a + b) || english).toLowerCase(), english);
+                    }
+                for (let [alias, code] of Object.entries(COUNTRY_ALIASES))
+                    this._countries.set(alias.toLowerCase(), local.of(code) || alias);
+            } catch (e) {
+                global.logWarning(`${UUID}: country names stay in English: ${e.message}`);
+            }
+        }
+        return this._countries.get(name.toLowerCase()) || name;
     }
 
     _stopSlides() {
@@ -531,7 +570,9 @@ class ImmichWidget extends Desklet.Desklet {
             if (this.period == "years")
                 filter.takenAt.lte = GLib.DateTime.new_utc(this.year_to, 12, 31, 23, 59, 59).format_iso8601();
         }
+        this._country("x"); // fills the country name maps
         let places = this.places.split(",").map(p => p.trim()).filter(p => p);
+        places = [...new Set(places.flatMap(p => [p, this._englishCountries.get(p.toLowerCase()) || p]))];
         if (places.length) filter.or = [{ city: { in: places } }, { country: { in: places } }];
         if (!this.include_screenshots) filter.make = { ne: null }; // screenshots have no camera make
         return filter;
@@ -640,6 +681,7 @@ class ImmichWidget extends Desklet.Desklet {
                 problems.push(e.message);
             }
         }
+        this._updatePermissions();
         Main.notify(_("Immich Widget"), [found.length ? _("Fetched %s.").format(found.join(", ")) : "", ...problems]
             .filter(t => t).join("\n"));
     }

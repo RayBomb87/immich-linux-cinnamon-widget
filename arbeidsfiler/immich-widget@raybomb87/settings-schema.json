@@ -177,7 +177,7 @@
   },
   "permissions": {
     "type": "textview",
-    "height": 60,
+    "height": 120,
     "default": "asset.read, asset.view, face.read",
     "description": "Permissions the key needs",
     "tooltip": "Filled in automatically from your choices"
