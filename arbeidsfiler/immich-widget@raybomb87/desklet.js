@@ -592,6 +592,25 @@ class ImmichWidget extends Desklet.Desklet {
         this._fetchLists();
     }
 
+    // Rows with the number of photos of each person or tag; the count is left empty without asset.statistics.
+    async _withCounts(items, nameOf, idsKey) {
+        let rows = [], counting = true;
+        for (let item of items) {
+            let count = "";
+            if (counting) {
+                try {
+                    let filter = { type: { eq: "IMAGE" }, visibility: { eq: "timeline" }, [idsKey]: { any: [item.id] } };
+                    count = String((await this._api("POST", "/search/statistics", { filter })).total);
+                } catch (e) {
+                    if (cancelled(e)) throw e;
+                    counting = false; // most likely the key lacks asset.statistics: skip the rest
+                }
+            }
+            rows.push({ name: nameOf(item), count });
+        }
+        return rows;
+    }
+
     async _fetchLists() {
         if (!this._configured()) return;
         // items are names, or rows with a name and extra columns (such as the album's photo count)
@@ -607,10 +626,10 @@ class ImmichWidget extends Desklet.Desklet {
             return sorted.length;
         };
         let lists = [
-            ["people", async () => (await this._allPeople()).map(p => p.name), _("%d people")],
-            ["albums", async () => (await this._api("GET", "/albums")).map(a => ({ name: a.albumName, count: a.assetCount })),
-                _("%d albums")],
-            ["tags", async () => (await this._api("GET", "/tags")).map(t => t.value), _("%d tags")],
+            ["people", async () => this._withCounts(await this._allPeople(), p => p.name, "personIds"), _("%d people")],
+            ["albums", async () => (await this._api("GET", "/albums"))
+                .map(a => ({ name: a.albumName, count: String(a.assetCount) })), _("%d albums")],
+            ["tags", async () => this._withCounts(await this._api("GET", "/tags"), t => t.value, "tagIds"), _("%d tags")],
         ];
         let found = [], problems = [];
         for (let [key, get, label] of lists) {

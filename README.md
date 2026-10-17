@@ -47,6 +47,7 @@ Then right-click the desktop → **Add Desklets**, select **Immich Widget** and 
 | `asset.read`, `asset.view` | Always |
 | `face.read` | Crop around faces, Ken Burns zoom or names in the caption |
 | `person.read` / `album.read` / `tag.read` | Fetching the lists of people / albums / tags, or showing ticked ones |
+| `asset.statistics` | Optional: the number of photos of each person and tag in the lists |
 | `memory.read` | *On this day* |
 | `asset.update` | Only for *Mark as favorite* in the right-click menu |
 

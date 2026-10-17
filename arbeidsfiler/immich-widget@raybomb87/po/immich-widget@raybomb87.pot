@@ -199,7 +199,8 @@ msgstr ""
 
 msgid ""
 "Tick the people, albums and tags to show. Nothing ticked means all. Fetching"
-" the lists needs person.read, album.read and tag.read."
+" the lists needs person.read, album.read and tag.read, and asset.statistics "
+"to count the photos of each person and tag."
 msgstr ""
 
 msgid "Fetch people, albums and tags from Immich"

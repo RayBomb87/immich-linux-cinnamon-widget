@@ -189,7 +189,7 @@
   },
   "lists-help": {
     "type": "label",
-    "description": "Tick the people, albums and tags to show. Nothing ticked means all. Fetching the lists needs person.read, album.read and tag.read."
+    "description": "Tick the people, albums and tags to show. Nothing ticked means all. Fetching the lists needs person.read, album.read and tag.read, and asset.statistics to count the photos of each person and tag."
   },
   "fetch-lists": {
     "type": "button",
@@ -204,7 +204,8 @@
     "height": 160,
     "columns": [
       { "id": "use", "title": "Show", "type": "boolean" },
-      { "id": "name", "title": "Person", "type": "string" }
+      { "id": "name", "title": "Person", "type": "string" },
+      { "id": "count", "title": "Photos", "type": "string", "align": 1.0 }
     ]
   },
   "albums": {
@@ -216,7 +217,7 @@
     "columns": [
       { "id": "use", "title": "Show", "type": "boolean" },
       { "id": "name", "title": "Album", "type": "string" },
-      { "id": "count", "title": "Photos", "type": "integer", "align": 1.0 }
+      { "id": "count", "title": "Photos", "type": "string", "align": 1.0 }
     ]
   },
   "tags": {
@@ -227,7 +228,8 @@
     "height": 100,
     "columns": [
       { "id": "use", "title": "Show", "type": "boolean" },
-      { "id": "name", "title": "Tag", "type": "string" }
+      { "id": "name", "title": "Tag", "type": "string" },
+      { "id": "count", "title": "Photos", "type": "string", "align": 1.0 }
     ]
   },
   "on-this-day": {
