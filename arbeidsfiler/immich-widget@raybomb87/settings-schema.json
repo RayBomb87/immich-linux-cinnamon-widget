@@ -215,7 +215,8 @@
     "height": 120,
     "columns": [
       { "id": "use", "title": "Show", "type": "boolean" },
-      { "id": "name", "title": "Album", "type": "string" }
+      { "id": "name", "title": "Album", "type": "string" },
+      { "id": "count", "title": "Photos", "type": "integer", "align": 1.0 }
     ]
   },
   "tags": {

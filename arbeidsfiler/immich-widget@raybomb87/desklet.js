@@ -594,15 +594,22 @@ class ImmichWidget extends Desklet.Desklet {
 
     async _fetchLists() {
         if (!this._configured()) return;
-        let merge = (key, names) => {
+        // items are names, or rows with a name and extra columns (such as the album's photo count)
+        let merge = (key, items) => {
             let use = new Set(ticked(this.settings.getValue(key)));
-            let rows = [...new Set(names)].sort((a, b) => a.localeCompare(b)).map(name => ({ use: use.has(name), name }));
-            this.settings.setValue(key, rows);
-            return rows.length;
+            let rows = new Map();
+            for (let item of items) {
+                let row = typeof item == "string" ? { name: item } : item;
+                if (!rows.has(row.name)) rows.set(row.name, { use: use.has(row.name), ...row });
+            }
+            let sorted = [...rows.values()].sort((a, b) => a.name.localeCompare(b.name));
+            this.settings.setValue(key, sorted);
+            return sorted.length;
         };
         let lists = [
             ["people", async () => (await this._allPeople()).map(p => p.name), _("%d people")],
-            ["albums", async () => (await this._api("GET", "/albums")).map(a => a.albumName), _("%d albums")],
+            ["albums", async () => (await this._api("GET", "/albums")).map(a => ({ name: a.albumName, count: a.assetCount })),
+                _("%d albums")],
             ["tags", async () => (await this._api("GET", "/tags")).map(t => t.value), _("%d tags")],
         ];
         let found = [], problems = [];
