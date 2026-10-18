@@ -22,12 +22,12 @@ The screenshots are from a Norwegian desktop, so dates and country names are in 
 
 | | Settings |
 | --- | --- |
-| ![Ken Burns zoom towards the face](arbeidsfiler/screenshots/ken-burns.gif) | **Slow zoom (Ken Burns)** on: the photo zooms slowly towards the face while it is shown. One person ticked, names on, place *City, country*, background behind the text. 500 × 290 px. |
+| ![Ken Burns zoom towards the face](arbeidsfiler/screenshots/ken-burns.gif) | **Slow zoom (Ken Burns)** on: the photo zooms slowly towards the face while it is shown (played back at double speed here). One person ticked, names on, place *City, country*, background behind the text. 500 × 290 px. |
 | ![One person with name](arbeidsfiler/screenshots/example-person.png) | **People:** one person ticked. **Text:** date (*27. July 2023*), place *City, country*, names of the people, background behind the text (45 %, radius 8), bottom left. 500 × 290 px, corner radius 16. |
 | ![Portrait format](arbeidsfiler/screenshots/example-portrait.png) | Same as above, but 260 × 340 px and corner radius 28, place *City*. **Crop around faces** keeps the person in the frame. |
 | ![Text top right](arbeidsfiler/screenshots/example-top-right.png) | **Search for:** *mountains and fjord landscape*. **Text:** top right, *How long ago* on, place *City*, text shadow, no background. |
 | ![Text centred](arbeidsfiler/screenshots/example-centre.png) | **Text:** bottom centre, date format *July 2023*, place *City, country*, text size 15 pt, background 70 % with radius 20. |
-| ![Slide transition](arbeidsfiler/screenshots/example-slide.png) | **Transitions:** only *Slide to the left*, 4000 ms, caught halfway. |
+| ![All transitions](arbeidsfiler/screenshots/transitions.gif) | **Transitions:** fade, slide left, right, up and down, zoom and flip, one after the other (*In turn*), 1100 ms. |
 | ![No text](arbeidsfiler/screenshots/example-no-text.png) | **Show text on the photo** off. 600 × 240 px, corner radius 40. |
 
 ## Requirements
