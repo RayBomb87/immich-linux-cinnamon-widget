@@ -34,6 +34,7 @@ The screenshots are from a Norwegian desktop, so dates and country names are in 
 
 - Linux Mint or another distribution with the Cinnamon desktop (tested on Linux Mint 22 / Cinnamon 6.6)
 - An Immich server, version 3.2 or newer (tested with Immich 3.3), reachable from the computer, at home or over a VPN such as Tailscale
+- Immich's machine learning must be on (it is by default) for face cropping, names and smart search.
 
 ## Install
 
