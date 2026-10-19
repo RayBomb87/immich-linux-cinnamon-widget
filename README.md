@@ -8,7 +8,7 @@ A desktop photo slideshow for the Cinnamon desktop that shows photos from your o
 - **Smart cropping.** Uses Immich face detection to crop each photo to the widget's shape around the people in it, so heads are not cut off.
 - **Your photos, your choice.** Tick the people, albums and tags to show, or use *On this day*, favorites, a star rating, a time span, places or Immich smart search ("beach", "snow").
 - **Camera photos only.** Screenshots and saved images are skipped (optional).
-- **Transitions.** Fade, slide in four directions, zoom and flip – tick several and the widget changes between them. Optional slow Ken Burns zoom towards the faces.
+- **Transitions.** Fade, slide in four directions, zoom and flip – tick several and the widget changes between them. Optional slow Ken Burns zoom towards the faces, with adjustable speed, for all photos or only those with people.
 - **Caption you control.** Date, "5 years ago", place, the names of the people and the Immich description, each on or off, in any corner, with an optional rounded background.
 - **Works offline.** Photos are cached, and a new batch is fetched on a schedule you choose.
 - **Everything is set in the widget's settings.** No config files, no terminal. The settings even tell you which API key permissions your choices need.
@@ -77,7 +77,7 @@ If you later turn on something that needs another permission, the widget says wh
 | Connection | Server address, API key, *Fetch new photos now*, permissions the key needs, *Open API keys in Immich* |
 | Photos | People, albums and tags (fetched from Immich, tick to show); on this day; favorites only; at least N stars; taken any time / last 12 months / last 5 years / between two years; places; smart search; screenshots; photos per batch, how often to fetch, time per photo |
 | Text | Show text; date and its format; how long ago; place (city / city, country / country); names; description; position; size; shadow; background with opacity and corner radius |
-| Appearance | Width × height, corner radius, crop around faces, Ken Burns zoom, transitions (fade, slide left/right/up/down, zoom, flip), random or in turn, duration |
+| Appearance | Width × height, corner radius, crop around faces, Ken Burns zoom (speed, only photos with faces), transitions (fade, slide left/right/up/down, zoom, flip), random or in turn, duration |
 
 Ticked people, albums or tags mean *any of them*; all the other filters must all match.
 You can add several widgets, for example one with favorites and one with a single album.
