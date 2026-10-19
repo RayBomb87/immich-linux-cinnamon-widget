@@ -13,7 +13,7 @@ th { color: #1a4f7a; }
 img { width: 100%; border: 1px solid #ccc; border-radius: 4pt; margin: 6pt 0; }
 .liten { width: 70%; }
 </style></head><body>
-<h1>Immich Widget 1.1</h1>
+<h1>Immich Widget 1.2</h1>
 <p>En widget for skrivebordet i Linux Mint (Cinnamon) som viser bilder fra din egen Immich-server som lysbildefremvisning. Krever Immich 3.2 eller nyere.</p>
 
 <h2>Installasjon</h2>
@@ -59,7 +59,9 @@ img { width: 100%; border: 1px solid #ccc; border-radius: 4pt; margin: 6pt 0; }
 <ul>
 <li><b>Tekst:</b> slå hele teksten av eller på, og hver del for seg: dato, «for N år siden», sted, navn på personene og beskrivelsen fra Immich. Velg plassering (oppe/nede, venstre/midten/høyre), tekstskygge og en bakgrunn bak teksten med egen avrunding og dekkevne.</li>
 <li><b>Overganger:</b> huk av én eller flere: toning, skyv mot venstre/høyre/opp/ned, zoom og vend. Med flere valgt veksler widgeten mellom dem, tilfeldig eller etter tur.</li>
-<li><b>Sakte zoom (Ken Burns):</b> bildet zoomer sakte inn mot personene mens det vises.</li>
+<li><b>Sakte zoom (Ken Burns):</b> bildet zoomer sakte inn mot personene mens det vises.
+  <ul><li><b>Bare bilder med ansikter:</b> bilder uten personer vises uten zoom.</li>
+  <li><b>Zoomfart:</b> hvor mange prosent bildet zoomer inn per 10 sekunder (2–40, standard 12). Zoomen stopper ved 50 %.</li></ul></li>
 </ul>
 
 <h2>Bruk</h2>
